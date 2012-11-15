@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts-config PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN"
+        "http://jakarta.apache.org/struts/dtds/struts-config_1_2.dtd">
+
+<struts-config>
+	<!-- Forms -->
+	<form-beans>
+		<form-bean name="newsForm" type="com.epam.news.forms.NewsForm" />
+	</form-beans>
+
+	<!-- Global forwards -->
+	<global-forwards>
+		<forward name="mainPage" path="/NewsList.do" />
+		<forward name="newsList" path="newsList.page" />
+		<forward name="viewNews" path="viewNews.page" />
+		<forward name="viewNewsAction" path="/ViewNews.do" />
+		<forward name="addNews" path="addNews.page" />
+		<forward name="editNews" path="addNews.page" />
+		<forward name="error" path="error.page" />
+		<forward name="back" path="/Back.do" />
+	</global-forwards>
+
+	<!-- Actions -->
+	<action-mappings>
+
+		<action path="/NewsList" name="newsForm"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			parameter="viewNewsList">
+		</action>
+
+		<action path="/ChangeLocale" name="newsForm"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			parameter="changeLocale">
+		</action>
+
+		<action path="/ViewNews" name="newsForm"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			parameter="viewNews" scope="session">
+		</action>
+
+		<action path="/EditNews" name="newsForm"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			parameter="editNews">
+		</action>
+
+		<action path="/DeleteGroupOfNews" name="newsForm"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			parameter="deleteGroupOfNews">
+		</action>
+
+		<action path="/DeleteNews" name="newsForm"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			parameter="deleteNews">
+		</action>
+
+		<action path="/AddNews" name="newsForm"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			parameter="addNews">
+		</action>
+
+		<action path="/SaveNews" name="newsForm"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			parameter="save">
+		</action>
+
+		<action path="/Cancel" name="newsForm"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			parameter="cancel">
+		</action>
+		
+		<action path="/Back" name="newsForm"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			parameter="back">
+		</action>
+
+	</action-mappings>
+
+	<!-- Tiles processor -->
+	<controller processorClass="org.apache.struts.tiles.TilesRequestProcessor" />
+
+	<!-- Internationalization -->
+	<message-resources parameter="com/epam/news/resources/ApplicationResource"
+		null="false" />
+
+	<!-- Struts tiles configuration -->
+	<plug-in className="org.apache.struts.tiles.TilesPlugin">
+		<set-property property="definitions-config" value="/WEB-INF/tiles-defs.xml" />
+	</plug-in>
+	<!-- Spring integration -->
+	<plug-in className="org.springframework.web.struts.ContextLoaderPlugIn">
+		<set-property property="contextConfigLocation" value="/WEB-INF/applicationContext.xml" />
+	</plug-in>
+</struts-config>

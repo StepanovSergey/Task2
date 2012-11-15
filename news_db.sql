@@ -1,0 +1,20 @@
+CREATE TABLE  "NEWS" 
+   (	"ID" NUMBER NOT NULL ENABLE, 
+	"TITLE" VARCHAR2(50) NOT NULL ENABLE, 
+	"NEWS_DATE" DATE NOT NULL ENABLE, 
+	"BRIEF" VARCHAR2(256) NOT NULL ENABLE, 
+	"CONTENT" VARCHAR2(4000) NOT NULL ENABLE, 
+	 CONSTRAINT "NEWS_PK" PRIMARY KEY ("ID") ENABLE
+   )
+/
+
+CREATE OR REPLACE TRIGGER  "BI_NEWS" 
+  before insert on "NEWS"               
+  for each row  
+begin   
+    select "NEWS_SEQ".nextval into :NEW.ID from dual; 
+end; 
+
+/
+ALTER TRIGGER  "BI_NEWS" ENABLE
+/
