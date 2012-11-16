@@ -21,7 +21,6 @@ function confirmDialog() {
 function validateAddEditNewsForm(form) {
 	var element, elementName, elementValue;
 	var errorList = [];
-	debugger;
 	for ( var i = 0; i < form.elements.length; i++) {
 		element = form.elements[i];
 		elementName = element.nodeName.toLowerCase();

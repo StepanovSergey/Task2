@@ -35,6 +35,7 @@ public class NewsForm extends ActionForm {
     private String lang;
     private Integer[] selectedItems;
     private String dateString;
+    private Locale locale;
 
     /**
      * @return the dateString
@@ -44,12 +45,26 @@ public class NewsForm extends ActionForm {
     }
 
     /**
+     * @param news
+     *            the news to set
+     */
+    public void setNews(News news) {
+	if (news.getDate() != null) {
+	    ResourceBundle bundle = ResourceBundle.getBundle(RESOURCES, locale);
+	    String pattern = bundle.getString(datePattern);
+	    DateFormat dateFormat = new SimpleDateFormat(pattern);
+	    dateString = dateFormat.format(news.getDate());
+	}
+	this.news = news;
+    }
+
+    /**
      * @param dateString
      *            the dateString to set
      */
     public void setDateString(String dateString) {
 	if (dateString != null && !dateString.isEmpty()) {
-	    ResourceBundle bundle = ResourceBundle.getBundle(RESOURCES);
+	    ResourceBundle bundle = ResourceBundle.getBundle(RESOURCES, locale);
 	    String pattern = bundle.getString(datePattern);
 	    DateFormat dateFormat = new SimpleDateFormat(pattern);
 	    try {
@@ -103,20 +118,6 @@ public class NewsForm extends ActionForm {
     }
 
     /**
-     * @param news
-     *            the news to set
-     */
-    public void setNews(News news, Locale locale) {
-	if (news.getDate() != null) {
-	    ResourceBundle bundle = ResourceBundle.getBundle(RESOURCES, locale);
-	    String pattern = bundle.getString(datePattern);
-	    DateFormat dateFormat = new SimpleDateFormat(pattern);
-	    dateString = dateFormat.format(news.getDate());
-	}
-	this.news = news;
-    }
-
-    /**
      * @return the lang
      */
     public String getLang() {
@@ -129,5 +130,20 @@ public class NewsForm extends ActionForm {
      */
     public void setLang(String lang) {
 	this.lang = lang;
+    }
+
+    /**
+     * @return the locale
+     */
+    public Locale getLocale() {
+	return locale;
+    }
+
+    /**
+     * @param locale
+     *            the locale to set
+     */
+    public void setLocale(Locale locale) {
+	this.locale = locale;
     }
 }

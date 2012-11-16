@@ -76,12 +76,16 @@ public final class NewsAction extends MappingDispatchAction {
 	String target = ERROR_PAGE;
 	request.getSession().setAttribute(PREVIOUS_PAGE, NEWS_LIST_PAGE);
 	NewsForm newsForm = (NewsForm) form;
+	if (newsForm.getLocale() == null){
+	    newsForm.setLocale(request.getLocale());
+	}
 	List<News> newsList = newsDao.getAll();
 	if (newsList != null) {
 	    target = NEWS_LIST_PAGE;
 	    newsForm.setNewsList(newsList);
 	}
-	ActionRedirect redirect = new ActionRedirect(mapping.findForward(target));
+	ActionRedirect redirect = new ActionRedirect(
+		mapping.findForward(target));
 	return redirect;
     }
 
@@ -110,8 +114,9 @@ public final class NewsAction extends MappingDispatchAction {
 	Calendar calendar = Calendar.getInstance();
 	Date today = new Date(calendar.getTimeInMillis());
 	news.setDate(today);
-	newsForm.setNews(news,getLocale(request));
-	ActionRedirect redirect = new ActionRedirect(mapping.findForward(target));
+	newsForm.setNews(news);
+	ActionRedirect redirect = new ActionRedirect(
+		mapping.findForward(target));
 	return redirect;
     }
 
@@ -138,7 +143,8 @@ public final class NewsAction extends MappingDispatchAction {
 	if (setNewsDetails(request, form)) {
 	    target = EDIT_NEWS_PAGE;
 	}
-	ActionRedirect redirect = new ActionRedirect(mapping.findForward(target));
+	ActionRedirect redirect = new ActionRedirect(
+		mapping.findForward(target));
 	return redirect;
     }
 
@@ -166,7 +172,8 @@ public final class NewsAction extends MappingDispatchAction {
 	    target = VIEW_NEWS_PAGE;
 	}
 	request.getSession().setAttribute(PREVIOUS_PAGE, VIEW_NEWS_PAGE);
-	ActionRedirect redirect = new ActionRedirect(mapping.findForward(target));
+	ActionRedirect redirect = new ActionRedirect(
+		mapping.findForward(target));
 	return redirect;
     }
 
@@ -204,7 +211,8 @@ public final class NewsAction extends MappingDispatchAction {
 	} else {
 	    target = BACK_PAGE;
 	}
-	ActionRedirect redirect = new ActionRedirect(mapping.findForward(target));
+	ActionRedirect redirect = new ActionRedirect(
+		mapping.findForward(target));
 	return redirect;
     }
 
@@ -243,7 +251,8 @@ public final class NewsAction extends MappingDispatchAction {
 	} else {
 	    target = BACK_PAGE;
 	}
-	ActionRedirect redirect = new ActionRedirect(mapping.findForward(target));
+	ActionRedirect redirect = new ActionRedirect(
+		mapping.findForward(target));
 	return redirect;
     }
 
@@ -290,7 +299,8 @@ public final class NewsAction extends MappingDispatchAction {
 		target = VIEW_NEWS_PAGE_ACTION;
 	    }
 	}
-	ActionRedirect redirect = new ActionRedirect(mapping.findForward(target));
+	ActionRedirect redirect = new ActionRedirect(
+		mapping.findForward(target));
 	return redirect;
     }
 
@@ -315,7 +325,8 @@ public final class NewsAction extends MappingDispatchAction {
 	    throws Exception {
 	String target = (String) request.getSession().getAttribute(
 		PREVIOUS_PAGE);
-	ActionRedirect redirect = new ActionRedirect(mapping.findForward(target));
+	ActionRedirect redirect = new ActionRedirect(
+		mapping.findForward(target));
 	return redirect;
     }
 
@@ -347,11 +358,16 @@ public final class NewsAction extends MappingDispatchAction {
 	if (form != null) {
 	    NewsForm newsForm = (NewsForm) form;
 	    String lang = newsForm.getLang();
-	    setLocale(request, new Locale(lang));
+	    Locale locale = new Locale(lang);
+	    setLocale(request, locale);
+	    newsForm.setLocale(locale);
 	    target = request.getHeader(REFERER);
 	}
-	ActionRedirect redirect = new ActionRedirect(target);
-	return redirect;
+	/*
+	 * ActionRedirect redirect = new ActionRedirect(target); return
+	 * redirect;
+	 */
+	return new ActionForward(target, true);
     }
 
     private boolean setNewsDetails(HttpServletRequest request, ActionForm form) {
@@ -359,7 +375,7 @@ public final class NewsAction extends MappingDispatchAction {
 	if (newsForm != null) {
 	    int id = newsForm.getNews().getId();
 	    News news = newsDao.getById(id);
-	    newsForm.setNews(news, getLocale(request));
+	    newsForm.setNews(news);
 	    return true;
 	} else {
 	    return false;

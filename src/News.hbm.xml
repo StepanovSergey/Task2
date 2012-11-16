@@ -7,7 +7,7 @@
 
 	<class name="News" table="NEWS">
 		<id name="id" column="ID">
-			<generator class="sequence">
+			<generator class="sequence-identity">
 				<param name="sequence">NEWS_SEQ</param>
 			</generator>
 		</id>

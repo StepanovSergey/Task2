@@ -19,7 +19,7 @@ import com.epam.news.utils.HibernateUtil;
  */
 public class NewsDAOHibernate implements INewsDao {
     private static HibernateUtil hibernateUtil;
-    private static final String GET_ALL_NEWS_QUERY = "FROM News ORDER BY NEWS_DATE";
+    private static final String GET_ALL_NEWS_QUERY = "FROM News ORDER BY NEWS_DATE DESC";
     private static final String DELETE_MANY_NEWS_QUERY = "DELETE FROM News WHERE id IN(";
     private static SessionFactory sessions = HibernateUtil.getSessionFactory();
 
@@ -63,8 +63,7 @@ public class NewsDAOHibernate implements INewsDao {
 	session.save(news);
 	transaction.commit();
 	int id = news.getId();
-	System.out.println("Add news generated id = " + id);
-	return 160;
+	return id;
     }
 
     @Override
