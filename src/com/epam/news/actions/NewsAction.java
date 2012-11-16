@@ -16,7 +16,7 @@ import org.apache.struts.action.ActionRedirect;
 import org.apache.struts.actions.MappingDispatchAction;
 
 import com.epam.news.bean.News;
-import com.epam.news.database.NewsDAO;
+import com.epam.news.database.NewsDAOHibernate;
 import com.epam.news.forms.NewsForm;
 
 /**
@@ -37,12 +37,12 @@ public final class NewsAction extends MappingDispatchAction {
     private static final String BACK_PAGE = "back";
     private static final String PREVIOUS_PAGE = "previousPage";
     private static final String REFERER = "referer";
-    private NewsDAO newsDao;
+    private NewsDAOHibernate newsDao;
 
     /**
      * @return the newsDao
      */
-    public NewsDAO getNewsDao() {
+    public NewsDAOHibernate getNewsDao() {
 	return newsDao;
     }
 
@@ -50,7 +50,7 @@ public final class NewsAction extends MappingDispatchAction {
      * @param newsDao
      *            the newsDao to set
      */
-    public void setNewsDao(NewsDAO newsDao) {
+    public void setNewsDao(NewsDAOHibernate newsDao) {
 	this.newsDao = newsDao;
     }
 

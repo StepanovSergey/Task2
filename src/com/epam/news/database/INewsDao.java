@@ -57,13 +57,4 @@ public interface INewsDao {
      * @return number of affected rows
      */
     public int deleteManyNews(Integer[] ids);
-
-    /**
-     * Get news by its title
-     * @param newsTitle
-     *            title of news
-     * @return number of rows of news with given title
-     */
-    public int getByTitle(String newsTitle);
-
 }

@@ -5,16 +5,16 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
-
+	
+	<!-- Own DB connection -->
 	<!-- Connection pool -->
-	<bean id="connectionPool" class="com.epam.news.database.ConnectionPool"
+<!-- 	<bean id="connectionPool" class="com.epam.news.database.ConnectionPool"
 		init-method="init" destroy-method="closeAllConnections">
 		<property name="dbParameters">
 			<ref bean="dataBaseParameters" />
 		</property>
 	</bean>
-
-	<!-- Database parameters -->
+	
 	<bean id="dataBaseParameters" class="com.epam.news.utils.DataBaseParameters">
 		<property name="URI" value="jdbc:oracle:thin:@localhost:1521:XE" />
 		<property name="driverClass" value="oracle.jdbc.OracleDriver" />
@@ -22,17 +22,26 @@
 		<property name="password" value="root" />
 		<property name="poolSize" value="5" />
 	</bean>
-
-	<!-- DAO -->
+	
 	<bean id="NewsDao" class="com.epam.news.database.NewsDAO">
+	</bean> -->
+	<!-- End own DB connection -->
+	
+	<!-- Hibernate DB connection -->
+	
+	<bean id="hibernateUtils" class="com.epam.news.utils.HibernateUtil"></bean>
+	<bean id="newsDaoHibernate" class="com.epam.news.database.NewsDAOHibernate">
+		<property name="hibernateUtil">
+			<ref bean="hibernateUtils"/>
+		</property>
 	</bean>
-
 	<!-- Actions -->
 	<bean
 		name="/NewsList, /ViewNews, /EditNews, /DeleteNews, /DeleteGroupOfNews, /AddNews, /SaveNews, /Cancel, /ChangeLocale, /Back"
 		id="newsAction" class="com.epam.news.actions.NewsAction">
 		<property name="newsDao">
-			<ref bean="NewsDao" />
+			<!-- <ref bean="NewsDao" /> -->
+			<ref bean="newsDaoHibernate"/>
 		</property>
 	</bean>
 </beans>

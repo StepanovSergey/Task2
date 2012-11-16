@@ -18,14 +18,13 @@ import com.epam.news.bean.News;
  * @author Siarhei_Stsiapanau
  * 
  */
-public final class NewsDAO implements INewsDao {
+public final class NewsDAO extends ANewsDAO implements INewsDao {
     private static final Logger log = Logger.getLogger(NewsDAO.class);
     private static final String getAllQuery = "SELECT * FROM news ORDER BY news_date desc";
     private static final String getByIdQuery = "SELECT * FROM news WHERE id=?";
     private static final String addNewsQuery = "INSERT INTO news(title,news_date,brief,content) VALUES (?,?,?,?)";
     private static final String updateNewsQuery = "UPDATE news SET title=?, news_date=?, brief=?, content=? WHERE id=?";
     private static final String deleteManyNewsQuery = "DELETE FROM news WHERE id IN (";
-    private static final String getByTitleNewsQuery = "SELECT title FROM news WHERE title = ?";
 
     @Override
     public List<News> getAll() {
@@ -133,8 +132,8 @@ public final class NewsDAO implements INewsDao {
 	int result = 0;
 	try {
 	    statement = connection.createStatement();
-	    String deleteManyNewsQuery = createDeleteManyNewsQuery(ids);
-	    result = statement.executeUpdate(deleteManyNewsQuery);
+	    String query = createDeleteManyNewsQuery(deleteManyNewsQuery, ids);
+	    result = statement.executeUpdate(query);
 	} catch (SQLException e) {
 	    log.error(e.getMessage(), e);
 	} finally {
@@ -142,49 +141,6 @@ public final class NewsDAO implements INewsDao {
 	    ConnectionPool.releaseConnection(connection);
 	}
 	return result;
-    }
-
-    @Override
-    public int getByTitle(String newsTitle) {
-	Connection connection = ConnectionPool.getConnection();
-	PreparedStatement preparedStatement = null;
-	int result = 0;
-	try {
-	    preparedStatement = connection
-		    .prepareStatement(getByTitleNewsQuery);
-	    preparedStatement.setString(1, newsTitle);
-	    ResultSet resultSet = preparedStatement.executeQuery();
-	    while (resultSet.next()) {
-		result++;
-	    }
-	} catch (SQLException e) {
-	    log.error(e.getMessage(), e);
-	} finally {
-	    releaseResources(null, preparedStatement, null);
-	    ConnectionPool.releaseConnection(connection);
-	}
-	return result;
-    }
-
-    /**
-     * Create query for deleting many news by one query
-     * 
-     * @param ids
-     *            ids of news for deleting
-     * @return string query for deleting many news
-     */
-    private String createDeleteManyNewsQuery(Integer[] ids) {
-	StringBuffer query = new StringBuffer(deleteManyNewsQuery);
-	Integer lastId = ids[ids.length - 1];
-	for (Integer id : ids) {
-	    query.append(id);
-	    if (lastId.equals(id)) {
-		query.append(")");
-	    } else {
-		query.append(",");
-	    }
-	}
-	return query.toString();
     }
 
     /**
