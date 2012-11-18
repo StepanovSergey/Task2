@@ -76,7 +76,7 @@ public final class NewsAction extends MappingDispatchAction {
 	String target = ERROR_PAGE;
 	request.getSession().setAttribute(PREVIOUS_PAGE, NEWS_LIST_PAGE);
 	NewsForm newsForm = (NewsForm) form;
-	if (newsForm.getLocale() == null){
+	if (newsForm.getLocale() == null) {
 	    newsForm.setLocale(request.getLocale());
 	}
 	List<News> newsList = newsDao.getAll();
@@ -363,11 +363,8 @@ public final class NewsAction extends MappingDispatchAction {
 	    newsForm.setLocale(locale);
 	    target = request.getHeader(REFERER);
 	}
-	/*
-	 * ActionRedirect redirect = new ActionRedirect(target); return
-	 * redirect;
-	 */
-	return new ActionForward(target, true);
+	ActionRedirect redirect = new ActionRedirect(target);
+	return redirect;
     }
 
     private boolean setNewsDetails(HttpServletRequest request, ActionForm form) {
@@ -383,7 +380,7 @@ public final class NewsAction extends MappingDispatchAction {
     }
 
     private boolean addNewsSaveButton(NewsForm form) {
-	NewsForm newsForm = (NewsForm) form;
+	NewsForm newsForm = form;
 	News news = newsForm.getNews();
 	int result = newsDao.addNews(news);
 	newsForm.getNews().setId(result);
@@ -395,7 +392,7 @@ public final class NewsAction extends MappingDispatchAction {
     }
 
     private boolean editNewsSaveButton(NewsForm form, int id) {
-	NewsForm newsForm = (NewsForm) form;
+	NewsForm newsForm = form;
 	News news = newsForm.getNews();
 	int result = newsDao.updateNews(news);
 	if (result > 0) {

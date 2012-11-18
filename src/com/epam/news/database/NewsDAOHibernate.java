@@ -27,14 +27,15 @@ public class NewsDAOHibernate implements INewsDao {
      * @return the hibernateUtil
      */
     public static HibernateUtil getHibernateUtil() {
-        return hibernateUtil;
+	return hibernateUtil;
     }
 
     /**
-     * @param hibernateUtil the hibernateUtil to set
+     * @param hibernateUtil
+     *            the hibernateUtil to set
      */
     public static void setHibernateUtil(HibernateUtil hibernateUtil) {
-        NewsDAOHibernate.hibernateUtil = hibernateUtil;
+	NewsDAOHibernate.hibernateUtil = hibernateUtil;
     }
 
     @Override
@@ -70,6 +71,7 @@ public class NewsDAOHibernate implements INewsDao {
     public int updateNews(News news) {
 	Session session = sessions.getCurrentSession();
 	Transaction transaction = session.beginTransaction();
+	news = (News) session.merge(news);
 	session.update(news);
 	transaction.commit();
 	return 1;
@@ -77,7 +79,8 @@ public class NewsDAOHibernate implements INewsDao {
 
     @Override
     public int deleteManyNews(Integer[] ids) {
-	String deleteQuery = NewsDAO.createDeleteManyNewsQuery(DELETE_MANY_NEWS_QUERY, ids);
+	String deleteQuery = NewsDAO.createDeleteManyNewsQuery(
+		DELETE_MANY_NEWS_QUERY, ids);
 	Session session = sessions.getCurrentSession();
 	Transaction transaction = session.beginTransaction();
 	Query query = session.createQuery(deleteQuery);
@@ -85,6 +88,5 @@ public class NewsDAOHibernate implements INewsDao {
 	transaction.commit();
 	return result;
     }
-    
-    
+
 }
