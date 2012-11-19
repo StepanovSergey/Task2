@@ -5,43 +5,33 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
-	
-	<!-- Own DB connection -->
-	<!-- Connection pool -->
-<!-- 	<bean id="connectionPool" class="com.epam.news.database.ConnectionPool"
-		init-method="init" destroy-method="closeAllConnections">
-		<property name="dbParameters">
-			<ref bean="dataBaseParameters" />
-		</property>
-	</bean>
-	
-	<bean id="dataBaseParameters" class="com.epam.news.utils.DataBaseParameters">
-		<property name="URI" value="jdbc:oracle:thin:@localhost:1521:XE" />
-		<property name="driverClass" value="oracle.jdbc.OracleDriver" />
-		<property name="user" value="SYSTEM" />
-		<property name="password" value="root" />
-		<property name="poolSize" value="5" />
-	</bean>
-	
-	<bean id="NewsDao" class="com.epam.news.database.NewsDAO">
-	</bean> -->
-	<!-- End own DB connection -->
-	
+
 	<!-- Hibernate DB connection -->
-	
 	<bean id="hibernateUtils" class="com.epam.news.utils.HibernateUtil"></bean>
 	<bean id="newsDaoHibernate" class="com.epam.news.database.NewsDAOHibernate">
 		<property name="hibernateUtil">
-			<ref bean="hibernateUtils"/>
+			<ref bean="hibernateUtils" />
 		</property>
 	</bean>
+	<!-- END Hibernate DB connection -->
+
+	<!-- JPA DB connection -->
+	<bean id="entityManagerFactory" class="com.epam.news.utils.EntityManagerFactoryWrapper"
+		init-method="init"></bean>
+	<bean id="newsDaoJPA" class="com.epam.news.database.NewsDAOJPA">
+		<property name="entityManagerWrapper">
+			<ref bean="entityManagerFactory" />
+		</property>
+	</bean>
+	<!-- END JPA DB connection -->
+
 	<!-- Actions -->
 	<bean
 		name="/NewsList, /ViewNews, /EditNews, /DeleteNews, /DeleteGroupOfNews, /AddNews, /SaveNews, /Cancel, /ChangeLocale, /Back"
 		id="newsAction" class="com.epam.news.actions.NewsAction">
 		<property name="newsDao">
-			<!-- <ref bean="NewsDao" /> -->
-			<ref bean="newsDaoHibernate"/>
+			<!-- <ref bean="newsDaoHibernate"/> -->
+			<ref bean="newsDaoJPA" />
 		</property>
 	</bean>
 </beans>

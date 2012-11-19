@@ -3,10 +3,12 @@ package com.epam.news.database;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
 
 import com.epam.news.bean.News;
 import com.epam.news.utils.HibernateUtil;
@@ -19,7 +21,7 @@ import com.epam.news.utils.HibernateUtil;
  */
 public class NewsDAOHibernate implements INewsDao {
     private static HibernateUtil hibernateUtil;
-    private static final String GET_ALL_NEWS_QUERY = "FROM News ORDER BY NEWS_DATE DESC";
+    private static final String NEWS_DATE_COLUMN = "date";
     private static final String DELETE_MANY_NEWS_QUERY = "DELETE FROM News WHERE id IN(";
     private static SessionFactory sessions = HibernateUtil.getSessionFactory();
 
@@ -43,8 +45,9 @@ public class NewsDAOHibernate implements INewsDao {
 	Session session = sessions.getCurrentSession();
 	session.beginTransaction();
 	List<News> list = new ArrayList<News>();
-	Query query = session.createQuery(GET_ALL_NEWS_QUERY);
-	list = query.list();
+	Criteria criteria = session.createCriteria(News.class);
+	criteria = criteria.addOrder(Order.desc(NEWS_DATE_COLUMN));
+	list = (List<News>)criteria.list();
 	return list;
     }
 

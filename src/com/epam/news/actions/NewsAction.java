@@ -16,7 +16,7 @@ import org.apache.struts.action.ActionRedirect;
 import org.apache.struts.actions.MappingDispatchAction;
 
 import com.epam.news.bean.News;
-import com.epam.news.database.NewsDAOHibernate;
+import com.epam.news.database.INewsDao;
 import com.epam.news.forms.NewsForm;
 
 /**
@@ -37,12 +37,12 @@ public final class NewsAction extends MappingDispatchAction {
     private static final String BACK_PAGE = "back";
     private static final String PREVIOUS_PAGE = "previousPage";
     private static final String REFERER = "referer";
-    private NewsDAOHibernate newsDao;
+    private INewsDao newsDao;
 
     /**
      * @return the newsDao
      */
-    public NewsDAOHibernate getNewsDao() {
+    public INewsDao getNewsDao() {
 	return newsDao;
     }
 
@@ -50,7 +50,7 @@ public final class NewsAction extends MappingDispatchAction {
      * @param newsDao
      *            the newsDao to set
      */
-    public void setNewsDao(NewsDAOHibernate newsDao) {
+    public void setNewsDao(INewsDao newsDao) {
 	this.newsDao = newsDao;
     }
 
@@ -76,7 +76,7 @@ public final class NewsAction extends MappingDispatchAction {
 	String target = ERROR_PAGE;
 	request.getSession().setAttribute(PREVIOUS_PAGE, NEWS_LIST_PAGE);
 	NewsForm newsForm = (NewsForm) form;
-	if (newsForm.getLocale() == null) {
+	if (newsForm.getLocale() == null){
 	    newsForm.setLocale(request.getLocale());
 	}
 	List<News> newsList = newsDao.getAll();
@@ -166,7 +166,6 @@ public final class NewsAction extends MappingDispatchAction {
     public ActionForward viewNews(ActionMapping mapping, ActionForm form,
 	    HttpServletRequest request, HttpServletResponse response)
 	    throws Exception {
-	saveToken(request);
 	String target = ERROR_PAGE;
 	if (setNewsDetails(request, form)) {
 	    target = VIEW_NEWS_PAGE;
@@ -363,8 +362,11 @@ public final class NewsAction extends MappingDispatchAction {
 	    newsForm.setLocale(locale);
 	    target = request.getHeader(REFERER);
 	}
-	ActionRedirect redirect = new ActionRedirect(target);
-	return redirect;
+	/*
+	 * ActionRedirect redirect = new ActionRedirect(target); return
+	 * redirect;
+	 */
+	return new ActionForward(target, true);
     }
 
     private boolean setNewsDetails(HttpServletRequest request, ActionForm form) {
@@ -380,7 +382,7 @@ public final class NewsAction extends MappingDispatchAction {
     }
 
     private boolean addNewsSaveButton(NewsForm form) {
-	NewsForm newsForm = form;
+	NewsForm newsForm = (NewsForm) form;
 	News news = newsForm.getNews();
 	int result = newsDao.addNews(news);
 	newsForm.getNews().setId(result);
@@ -392,7 +394,7 @@ public final class NewsAction extends MappingDispatchAction {
     }
 
     private boolean editNewsSaveButton(NewsForm form, int id) {
-	NewsForm newsForm = form;
+	NewsForm newsForm = (NewsForm) form;
 	News news = newsForm.getNews();
 	int result = newsDao.updateNews(news);
 	if (result > 0) {

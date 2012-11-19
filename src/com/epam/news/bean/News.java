@@ -1,6 +1,17 @@
 package com.epam.news.bean;
 
+import java.io.Serializable;
 import java.sql.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 
 /**
  * This class provides news bean
@@ -8,11 +19,22 @@ import java.sql.Date;
  * @author Siarhei_Stsiapanau
  * 
  */
-public class News {
+@NamedQuery(name="news.findAll", query="FROM News n")
+@Entity
+@Table
+public class News implements Serializable{
+    private static final long serialVersionUID = 9153424252861600528L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "newsSequence")
+    @SequenceGenerator(name = "newsSequence", sequenceName = "NEWS_SEQ")
     private int id;
+    @Column(name="TITLE")
     private String title;
+    @Column(name="news_date")
     private Date date;
+    @Column(name="BRIEF")
     private String brief;
+    @Column(name="CONTENT")
     private String content;
 
     /**
