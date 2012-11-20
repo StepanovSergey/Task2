@@ -166,6 +166,7 @@ public final class NewsAction extends MappingDispatchAction {
     public ActionForward viewNews(ActionMapping mapping, ActionForm form,
 	    HttpServletRequest request, HttpServletResponse response)
 	    throws Exception {
+	saveToken(request);
 	String target = ERROR_PAGE;
 	if (setNewsDetails(request, form)) {
 	    target = VIEW_NEWS_PAGE;

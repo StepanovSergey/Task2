@@ -25,7 +25,7 @@ import javax.persistence.Table;
 public class News implements Serializable{
     private static final long serialVersionUID = 9153424252861600528L;
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "newsSequence")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "newsSequence")
     @SequenceGenerator(name = "newsSequence", sequenceName = "NEWS_SEQ")
     private int id;
     @Column(name="TITLE")
