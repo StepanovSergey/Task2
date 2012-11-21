@@ -19,7 +19,7 @@ import javax.persistence.Table;
  * @author Siarhei_Stsiapanau
  * 
  */
-@NamedQuery(name="news.findAll", query="FROM News n")
+@NamedQuery(name="news.findAll", query="FROM News n ORDER BY date DESC, id DESC")
 @Entity
 @Table
 public class News implements Serializable{

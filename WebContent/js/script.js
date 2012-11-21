@@ -29,7 +29,7 @@ function validateAddEditNewsForm(form) {
 			if (element.name == "news.title") {
 				if (elementValue == "") {
 					errorList.push(1);
-				} else if (element.length > 500) {
+				} else if (elementValue.length > 100) {
 					errorList.push(6);
 				}
 			}
@@ -45,14 +45,14 @@ function validateAddEditNewsForm(form) {
 			if (element.name == "news.brief") {
 				if (elementValue == "") {
 					errorList.push(3);
-				} else if (element.length > 500) {
+				} else if (elementValue.length > 500) {
 					errorList.push(7);
 				}
 			}
 			if (element.name == "news.content") {
 				if (elementValue == "") {
 					errorList.push(4);
-				} else if (element.length > 500) {
+				} else if (elementValue.length > 2048) {
 					errorList.push(8);
 				}
 			}
