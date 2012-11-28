@@ -19,7 +19,7 @@ import com.epam.news.utils.HibernateUtil;
  * @author Siarhei_Stsiapanau
  * 
  */
-public class NewsDAOHibernate implements INewsDao {
+public final class NewsDAOHibernate implements INewsDao {
     private static HibernateUtil hibernateUtil;
     private static final String NEWS_DATE_COLUMN = "date";
     private static final String DELETE_MANY_NEWS_QUERY = "DELETE FROM News WHERE id IN(";

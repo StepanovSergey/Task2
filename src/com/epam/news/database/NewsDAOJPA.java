@@ -16,7 +16,7 @@ import com.epam.news.utils.EntityManagerFactoryWrapper;
  * @author Siarhei_Stsiapanau
  * 
  */
-public class NewsDAOJPA implements INewsDao {
+public final class NewsDAOJPA implements INewsDao {
     private EntityManagerFactoryWrapper entityManagerWrapper;
     private static final String DELETE_QUERY = "DELETE FROM News WHERE id IN(";
 
