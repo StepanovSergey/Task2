@@ -12,29 +12,28 @@ import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-
 /**
  * This class provides news bean
  * 
  * @author Siarhei_Stsiapanau
  * 
  */
-@NamedQuery(name="news.findAll", query="FROM News n ORDER BY date DESC, id DESC")
+@NamedQuery(name = "news.findAll", query = "FROM News n ORDER BY date DESC, id DESC")
 @Entity
 @Table
-public class News implements Serializable{
+public class News implements Serializable {
     private static final long serialVersionUID = 9153424252861600528L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "newsSequence")
     @SequenceGenerator(name = "newsSequence", sequenceName = "NEWS_SEQ")
     private int id;
-    @Column(name="TITLE")
+    @Column(name = "TITLE")
     private String title;
-    @Column(name="news_date")
+    @Column(name = "news_date")
     private Date date;
-    @Column(name="BRIEF")
+    @Column(name = "BRIEF")
     private String brief;
-    @Column(name="CONTENT")
+    @Column(name = "CONTENT")
     private String content;
 
     /**

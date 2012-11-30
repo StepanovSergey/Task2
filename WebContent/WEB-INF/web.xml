@@ -46,6 +46,15 @@
 		</taglib>
 	</jsp-config>
 
+	<filter>
+		<filter-name>SetCharFilter</filter-name>
+		<filter-class>com.epam.news.filter.SetCharFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>SetCharFilter</filter-name>
+		<servlet-name>action</servlet-name>
+	</filter-mapping>
+
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
