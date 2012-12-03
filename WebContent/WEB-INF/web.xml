@@ -49,6 +49,10 @@
 	<filter>
 		<filter-name>SetCharFilter</filter-name>
 		<filter-class>com.epam.news.filter.SetCharFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
 	</filter>
 	<filter-mapping>
 		<filter-name>SetCharFilter</filter-name>

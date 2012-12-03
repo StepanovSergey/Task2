@@ -59,12 +59,10 @@ public final class NewsDAOJPA implements INewsDao {
 	EntityTransaction transaction = em.getTransaction();
 	transaction.begin();
 	em.persist(news);
-	em.flush();
-	int id = news.getId();
 	transaction.commit();
+	Integer id = news.getId();
 	em.close();
-	System.out.println("Id = " + id);
-	return id;
+	return ++id;
     }
 
     @Override
