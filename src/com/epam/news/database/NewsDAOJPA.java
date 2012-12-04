@@ -7,6 +7,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
+
 import com.epam.news.bean.News;
 import com.epam.news.utils.EntityManagerFactoryWrapper;
 
@@ -17,6 +21,7 @@ import com.epam.news.utils.EntityManagerFactoryWrapper;
  * 
  */
 public final class NewsDAOJPA extends ANewsDAO implements INewsDao {
+    private static Logger logger = Logger.getLogger(NewsDAOJPA.class);
     private EntityManagerFactoryWrapper entityManagerWrapper;
     private static final String DELETE_QUERY = "DELETE FROM News WHERE id IN(";
 
@@ -59,9 +64,25 @@ public final class NewsDAOJPA extends ANewsDAO implements INewsDao {
 	EntityTransaction transaction = em.getTransaction();
 	transaction.begin();
 	em.persist(news);
-	transaction.commit();
-	Integer id = news.getId();
-	em.close();
+	Integer id;
+	try {
+	    transaction.commit();
+	    id = news.getId();
+	} catch (Exception e) {
+	    if (logger.isEnabledFor(Level.ERROR)) {
+		logger.error(e.getMessage(), e);
+	    }
+	    try {
+		transaction.rollback();
+	    } catch (Exception ex) {
+		if (logger.isEnabledFor(Level.ERROR)) {
+		    logger.error(ex.getMessage(), ex);
+		}
+	    }
+	    return 0;
+	} finally {
+	    em.close();
+	}
 	return ++id;
     }
 
@@ -71,8 +92,23 @@ public final class NewsDAOJPA extends ANewsDAO implements INewsDao {
 	EntityTransaction transaction = em.getTransaction();
 	transaction.begin();
 	em.merge(news);
-	transaction.commit();
-	em.close();
+	try {
+	    transaction.commit();
+	} catch (HibernateException e) {
+	    if (logger.isEnabledFor(Level.ERROR)) {
+		logger.error(e.getMessage(), e);
+	    }
+	    try {
+		transaction.rollback();
+	    } catch (Exception ex) {
+		if (logger.isEnabledFor(Level.ERROR)) {
+		    logger.error(ex.getMessage(), ex);
+		}
+	    }
+	    return 0;
+	} finally {
+	    em.close();
+	}
 	return 1;
     }
 
@@ -85,8 +121,23 @@ public final class NewsDAOJPA extends ANewsDAO implements INewsDao {
 		ids);
 	Query query = em.createQuery(deleteQuery);
 	int result = query.executeUpdate();
-	transaction.commit();
-	em.close();
+	try {
+	    transaction.commit();
+	} catch (HibernateException e) {
+	    if (logger.isEnabledFor(Level.ERROR)) {
+		logger.error(e.getMessage(), e);
+	    }
+	    try {
+		transaction.rollback();
+	    } catch (Exception ex) {
+		if (logger.isEnabledFor(Level.ERROR)) {
+		    logger.error(ex.getMessage(), ex);
+		}
+	    }
+	    return 0;
+	} finally {
+	    em.close();
+	}
 	return result;
     }
 

@@ -36,7 +36,7 @@ public interface INewsDao {
      * 
      * @param news
      *            news to add
-     * @return number of affected rows. Must be equal 1.
+     * @return the id of added news
      */
     public int addNews(News news);
 

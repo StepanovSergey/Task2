@@ -20,7 +20,7 @@ import javax.persistence.Table;
  */
 @NamedQuery(name = "news.findAll", query = "FROM News n ORDER BY date DESC, id DESC")
 @Entity
-@Table
+@Table(name = "NEWS")
 public class News implements Serializable {
     private static final long serialVersionUID = 9153424252861600528L;
     @Id
