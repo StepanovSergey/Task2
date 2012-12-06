@@ -11,7 +11,10 @@ import java.text.SimpleDateFormat;
  * @author Siarhei_Stsiapanau
  * 
  */
-public class DateConverter {
+public final class DateConverter {
+    private DateConverter() {
+    }
+
     /**
      * Convert java.sql.Date to java.util.Date
      * 
@@ -71,7 +74,8 @@ public class DateConverter {
 	return convertToString(utilDate, pattern);
     }
 
-    public static java.util.Date convertToDateUtil(String dateString, String pattern) {
+    public static java.util.Date convertToDateUtil(String dateString,
+	    String pattern) {
 	DateFormat dateFormat = null;
 	java.util.Date date = null;
 	if (isValidPattern(pattern)) {
@@ -87,12 +91,13 @@ public class DateConverter {
 	return date;
     }
 
-    public static java.sql.Date convertToDateSql(String dateString, String pattern) {
+    public static java.sql.Date convertToDateSql(String dateString,
+	    String pattern) {
 	java.util.Date utilDate = convertToDateUtil(dateString, pattern);
 	return convertToDateSql(utilDate);
     }
-        
-    private static boolean isValidPattern(String pattern){
+
+    private static boolean isValidPattern(String pattern) {
 	if (pattern.isEmpty() || pattern == null) {
 	    return false;
 	} else {

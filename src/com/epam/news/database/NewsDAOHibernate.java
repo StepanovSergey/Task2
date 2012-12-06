@@ -23,10 +23,9 @@ import com.epam.news.utils.HibernateUtil;
  * 
  */
 public final class NewsDAOHibernate extends ANewsDAO implements INewsDao {
-    private static Logger logger = Logger.getLogger(NewsDAOHibernate.class);
+    private static final Logger logger = Logger.getLogger(NewsDAOHibernate.class);
     private static HibernateUtil hibernateUtil;
     private static final String NEWS_DATE_COLUMN = "date";
-    private static final String DELETE_MANY_NEWS_QUERY = "DELETE FROM News WHERE id IN(";
     private static SessionFactory sessions = HibernateUtil.getSessionFactory();
 
     /**
@@ -116,11 +115,9 @@ public final class NewsDAOHibernate extends ANewsDAO implements INewsDao {
 
     @Override
     public int deleteManyNews(Integer[] ids) {
-	String deleteQuery = NewsDAO.createDeleteManyNewsQuery(
-		DELETE_MANY_NEWS_QUERY, ids);
 	Session session = sessions.getCurrentSession();
 	Transaction transaction = session.beginTransaction();
-	Query query = session.createQuery(deleteQuery);
+	Query query = session.getNamedQuery("deleteManyNewsQuery").setParameterList("deleteIds", ids);
 	int result = query.executeUpdate();
 	try {
 	    transaction.commit();

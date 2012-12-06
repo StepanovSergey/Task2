@@ -16,5 +16,9 @@
 		<property name="brief" />
 		<property name="content" />
 	</class>
+	
+	<query name="deleteManyNewsQuery">
+        <![CDATA[DELETE FROM News WHERE id IN(:deleteIds)]]>
+    </query>
 
 </hibernate-mapping>

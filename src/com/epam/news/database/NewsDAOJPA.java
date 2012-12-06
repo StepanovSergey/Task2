@@ -1,6 +1,7 @@
 package com.epam.news.database;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -21,9 +22,8 @@ import com.epam.news.utils.EntityManagerFactoryWrapper;
  * 
  */
 public final class NewsDAOJPA extends ANewsDAO implements INewsDao {
-    private static Logger logger = Logger.getLogger(NewsDAOJPA.class);
+    private static final Logger logger = Logger.getLogger(NewsDAOJPA.class);
     private EntityManagerFactoryWrapper entityManagerWrapper;
-    private static final String DELETE_QUERY = "DELETE FROM News WHERE id IN(";
 
     /**
      * @return the entityManager
@@ -114,31 +114,36 @@ public final class NewsDAOJPA extends ANewsDAO implements INewsDao {
 
     @Override
     public int deleteManyNews(Integer[] ids) {
-	EntityManager em = entityManagerWrapper.getEntityManager();
-	EntityTransaction transaction = em.getTransaction();
-	transaction.begin();
-	String deleteQuery = NewsDAO.createDeleteManyNewsQuery(DELETE_QUERY,
-		ids);
-	Query query = em.createQuery(deleteQuery);
-	int result = query.executeUpdate();
-	try {
-	    transaction.commit();
-	} catch (HibernateException e) {
-	    if (logger.isEnabledFor(Level.ERROR)) {
-		logger.error(e.getMessage(), e);
-	    }
+	List<Integer> idsList = new ArrayList<Integer>();
+	boolean isAdded = idsList.addAll(Arrays.asList(ids));
+	if (isAdded) {
+	    EntityManager em = entityManagerWrapper.getEntityManager();
+	    EntityTransaction transaction = em.getTransaction();
+	    transaction.begin();
+	    Query query = em.createNamedQuery("deleteManyNewsQuery")
+		    .setParameter("deleteIds", idsList);
+	    int result = query.executeUpdate();
 	    try {
-		transaction.rollback();
-	    } catch (Exception ex) {
+		transaction.commit();
+	    } catch (HibernateException e) {
 		if (logger.isEnabledFor(Level.ERROR)) {
-		    logger.error(ex.getMessage(), ex);
+		    logger.error(e.getMessage(), e);
 		}
+		try {
+		    transaction.rollback();
+		} catch (Exception ex) {
+		    if (logger.isEnabledFor(Level.ERROR)) {
+			logger.error(ex.getMessage(), ex);
+		    }
+		}
+		return 0;
+	    } finally {
+		em.close();
 	    }
-	    return 0;
-	} finally {
-	    em.close();
-	}
-	return result;
-    }
+	    return result;
 
+	} else {
+	    return 0;
+	}
+    }
 }
