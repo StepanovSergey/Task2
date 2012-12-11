@@ -22,11 +22,11 @@ import com.epam.news.utils.HibernateUtil;
  * @author Siarhei_Stsiapanau
  * 
  */
-public final class NewsDAOHibernate extends ANewsDAO implements INewsDao {
+final class NewsDAOHibernate implements INewsDao {
     private static final Logger logger = Logger.getLogger(NewsDAOHibernate.class);
     private static HibernateUtil hibernateUtil;
     private static final String NEWS_DATE_COLUMN = "date";
-    private static SessionFactory sessions = HibernateUtil.getSessionFactory();
+    private static final SessionFactory sessions = HibernateUtil.getSessionFactory();
 
     /**
      * @return the hibernateUtil

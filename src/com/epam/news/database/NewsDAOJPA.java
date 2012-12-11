@@ -21,7 +21,7 @@ import com.epam.news.utils.EntityManagerFactoryWrapper;
  * @author Siarhei_Stsiapanau
  * 
  */
-public final class NewsDAOJPA extends ANewsDAO implements INewsDao {
+final class NewsDAOJPA  implements INewsDao {
     private static final Logger logger = Logger.getLogger(NewsDAOJPA.class);
     private EntityManagerFactoryWrapper entityManagerWrapper;
 
